@@ -211,6 +211,20 @@ methods:
   Takes either a simple-list of column names, or a Field Definition Block (see
   below)
 
+  The API for passing a proc is a bit hinky at the moment, but this seems 
+  to work. You currently have to specify all of the columns. You can divulge
+  header vs row by testing for b.object (in this example):
+
+    list_columns [] do |b|
+      b.static_ttext :header_only if b.object.nil?
+      b.static_text  :member_id
+      b.static_html  :unescaped_raw_html_column
+      b.static_text  :escaped_description
+    end
+
+  It would be nicer if we could find a way to not have to specify all of this,
+  possibly w/ a default helper to use.
+
 [admin_fieldset(label='', *columns, &proc)]
   Defines a fieldset for edit views. For simple use, you can just give it a
   list of columns. Once you get started, you'll want to pass a Field
