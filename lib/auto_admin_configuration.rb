@@ -62,7 +62,10 @@ module AutoAdminConfiguration
   #   end
   def self.primary_objects= new_value; @@primary_objects = new_value; end
 
-  def self.admin_model; @@admin_model ||= nil; end
+  def self.admin_model
+    @@admin_model ||= nil
+    @@admin_model ? model(@@admin_model) : nil
+  end
 
   # Set the application model used to authenticate the users. Use it as:
   #
@@ -118,6 +121,10 @@ module AutoAdminConfiguration
 
   # Returns the list of active export formats.
   def self.save_as; @@save_as_formats ||= []; end
+
+  # Turn on/off the use of FCKEditor.
+  def self.use_fckeditor_plugin=(flag); @@use_fckeditor = flag; end
+  def self.use_fckeditor_plugin; @@use_fckeditor ||= false; end
 
   # Turns a simple string into the model class.
   def self.model name

@@ -118,6 +118,10 @@ For the optional export mechanism you also need:
 
 * the <b>pdf-writer</b> gem for the PDF export module.
 
+To use the +html_area+ helper with FCKEditor you need an extra
+plugin[http://rubyforge.org/projects/fckeditorp/]; see its documentation for
+further instructions.
+
 
 == How do I use it?
 
@@ -144,6 +148,9 @@ lines to the bottom of your environment.rb or in an initializer file:
 
     # The optional export mechanism.
     admin.save_as = %w(pdf csv)
+
+    # Turn on the use of FCKEditor.
+    admin.use_fckeditor_plugin = true
   end
 
 Having done that, you can now (re-)start <tt>script/server</tt>, and navigate
@@ -344,7 +351,7 @@ object for a list view, for fairly obvious reasons.
   generally-applicable choice (for example, it favours a +select+ over a
   +radio_group+ for a +belongs_to+ association).
 
-* +static_image+ sports a number of options used to build an hash suitable for
+* +static_image+ sports a number of options used to build a hash suitable for
   the +tag+ helper responsible for the creation of final <tt><img></tt> tag:
 
   * <tt>:controller</tt> (default "auto_admin") and <tt>:action</tt> (default
@@ -362,8 +369,8 @@ object for a list view, for fairly obvious reasons.
   Everything else is passed as is to the +tag+ helper (so one could use
   <tt>:style</tt> or <tt>:class</tt> to alter the looks of <tt><img></tt>).
   This helper accepts a block, with a single parameter (this object), which
-  can be used to return an hash to be merged into the options that are about
-  to be passed to the tag helper.
+  can be used to return a hash to be merged into the options that are about to
+  be passed to the tag helper.
 
 * +text_field_with_auto_complete+ provides a simple text field with
   autocompletion delegating all the work to the homonymous ActionView's
@@ -391,10 +398,18 @@ object for a list view, for fairly obvious reasons.
     f.hyperlink :picture, :url => f.object.picture.url,
       :link_text => 'The picture'
 
+* +html_area+ use FCKEditor if the support has been explicitly turned on,
+  otherwise it delegates to +text_area+; when using FCKEditor, you can pass a
+  hash of options down to the editor:
+
+    f.html_area :content, :toolbarSet => 'MyStyle', :height => '300px'
+
+  See the FCKEditor plugin[http://rubyforge.org/projects/fckeditorp/]'s
+  documentation.
+
 * None of the following actually work, but they're defined, waiting for me to
-  come back and write them. +html_area+ will eventually use FCKeditor by
-  default, and presumably the file/image fields will delegate to file_column:
-  +html_area+, +image_field+, +static_file+.
+  come back and write them. Presumably the image fields will delegate to
+  file_column: +image_field+, +static_file+.
 
 
 == How does it work? - Part II, Themes
